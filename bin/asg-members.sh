@@ -6,19 +6,19 @@ set -o pipefail
 set -o nounset
 #set -o xtrace
 
-# Set magic variables for current file & dir
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-__file="$(basename "$0")"
-__base="${__file%%.*}"
-__root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on your app
 
-# echo "__dir: ${__dir}"
-# echo "__file: ${__file}"
-# echo "__base: ${__base}"
-# echo "__root: ${__root}"
+# Set magic variables for current file & dir
+declare -A __magic
+__magic[dir]="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__magic[file]="$(basename "$0")"
+__magic[base]="${__magic[file]%%.*}"
+__magic[root]="$(cd "$(dirname "${__magic[dir]}")" && pwd)" # 
+
+#for key in "${!__magic[@]}"; do
+#    printf "\$__magic[%s] : %s\n" "$key" "${__magic[$key]}"
+#done
 
 arg1="${1:-}"
-
 
 cprint() {
     # generate colored output messages
