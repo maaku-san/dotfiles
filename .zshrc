@@ -84,8 +84,12 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
+# clone zgen if we dont have it
+if [[ ! -f ${HOME}/.zgen/zgen.zsh ]]; then
+  git clone git@github.com:tarjoilija/zgen.git "${HOME}/.zgen"
+fi
 # load zgen
-source "${HOME}/.zgen/zgen.zsh"
+source ${HOME}/.zgen/zgen.zsh
 
 # spaceship prompt
 SPACESHIP_CHAR_SYMBOL='$ '
@@ -94,9 +98,6 @@ SPACESHIP_USER_SHOW=always
 SPACESHIP_HOST_SHOW=always
 zgen load denysdovhan/spaceship-prompt spaceship
 
-# powerline prompt
-#zgen load bhilburn/powerlevel9k powerlevel9k
-
 # a better history navigator
 # pre-req: pip install percol [--user]
 function exists { which $1 &> /dev/null }
@@ -104,7 +105,7 @@ if exists percol; then
     function percol_select_history() {
         local tac
         exists gtac && tac="gtac" || { exists tac && tac="tac" || { tac="tail -r" } }
-        BUFFER=$(fc -li -n 1 | eval $tac | percol --query "$LBUFFER")
+        BUFFER=$(fc -l -n 1 | eval $tac | percol --query "$LBUFFER")
         CURSOR=$#BUFFER         # move cursor
         zle -R -c               # refresh
     }
