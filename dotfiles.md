@@ -8,20 +8,29 @@ start from scratch
 ------------------
 
 * create a bare git repo which will track our files
-`git init --bare $HOME/.dotfiles`
+```
+git init --bare $HOME/.dotfiles
+```
 
 * create an alias to make using our new repo easier
-`alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'`
+```
+alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+```
 
 * hide files that we are not tracking from git
-`dfiles config --local status.showUntrackedFiles no`
+```
+dfiles config --local status.showUntrackedFiles no
+```
 
 * add an origin repo
-`dfiles remote add origin https://github.com/mark-vandenbos/dotfiles.git`
+```
+dfiles remote add origin https://github.com/mark-vandenbos/dotfiles.git
+```
 
 * add the dfiles alias to our shell profile
+```
 `echo "alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> ${HOME}/.zshrc`
-
+```
 
 workflow
 --------
@@ -44,21 +53,32 @@ clone dfiles onto a new machine
 -------------------------------
 
 * create your alias
-`alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'`
+```
+alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+```
 
 * ignore .dfiles dir to prevent weird recursion problems
-`echo ".dfiles" >> .gitignore`
+```
+echo ".dfiles" >> .gitignore
+```
 
 * clone dfiles into a bare repo
-`git clone --bare https://github.com/mark-vandenbos/dotfiles.git $HOME/.dotfiles`
+```
+git clone --bare https://github.com/mark-vandenbos/dotfiles.git $HOME/.dotfiles
+```
 
 * checkout the actual content from the bare repository to your $HOME:
-`dfiles checkout`
+```
+dfiles checkout
+```
 
 * you might need tp cleanup existing configs
-`mkdir -p .dotfiles-backup && \`
-`config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dotfiles-backup/{}`
+```
+mkdir -p .dotfiles-backup && \
+config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dotfiles-backup/{}
+```
 
 * re-run the checkout
-`dfiles checkout`
-
+```
+dfiles checkout 
+```
