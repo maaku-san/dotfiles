@@ -57,12 +57,12 @@ clone dfiles onto a new machine
 alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 ```
 
-* ignore .dfiles dir to prevent weird recursion problems
+* ignore .dotfiles dir to prevent weird recursion problems
 ```
-echo ".dfiles" >> .gitignore
+echo ".dotfiles" >> .gitignore
 ```
 
-* clone dfiles into a bare repo
+* clone dotfiles into a bare repo
 ```
 git clone --bare https://github.com/mark-vandenbos/dotfiles.git $HOME/.dotfiles
 ```

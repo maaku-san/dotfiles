@@ -10,16 +10,24 @@ case `uname` in
     export CLICOLOR=1
     export PATH="/Users/mvandenbos/bin:$PATH"
     export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
+    export PATH="/usr/local/opt/python/libexec/bin:$PATH"
     export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
     export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
     export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+    export PATH="/usr/local/opt/ruby/bin:$PATH"
+
+    export PATH="~/bin/:$PATH"
 
     #alias grep="/usr/local/opt/grep/libexec/gnubin/grep"
     #export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}""
-    
+
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-  
+
+    export WORKON_HOME=$HOME/.virtualenvs
+    export PROJECT_HOME=$HOME/Documents
+    source /usr/local/bin/virtualenvwrapper.sh
+
   ;;
   Linux)
     PATH=$PATH:$HOME/.local/bin
@@ -90,6 +98,8 @@ if [[ ! -f ${HOME}/.zgen/zgen.zsh ]]; then
 fi
 # load zgen
 source ${HOME}/.zgen/zgen.zsh
+export ZGEN_RESET_ON_CHANGE=(${HOME}/.zshrc ${HOME}/.zshrc.local)
+
 
 # spaceship prompt
 SPACESHIP_CHAR_SYMBOL='$ '
@@ -114,7 +124,6 @@ if exists percol; then
     bindkey '^R' percol_select_history
 fi
 
-
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 # aliases
@@ -122,15 +131,17 @@ fi
 alias cp="cp -v"
 alias mv="mv -v"
 alias rm="rm -v"
-
 alias scp='scp -o "LogLevel=error"'
-
 alias myip='curl -sS "https://api.ipify.org?format=json" | jq .'
 alias mylocalip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
-
 alias mytmux="/usr/local/bin/tmux attach-session -d -t default || /usr/local/bin/tmux new-session -s default"
-
 alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias docker-prune='docker container prune --force; docker volume prune --force; docker image prune -a --force; docker system prune --volumes -f'
+
+alias pw16="pwgen -cnyB1 -r \`\'\"\.\,\;\:\{\}\(\)\[\]\<\>\\\/\| 16 10"
+alias pw32="pwgen -cnyB1 -r """\`\'\"\.\,\;\:\{\}\(\)\[\]\<\>\\\/\|""" 32 10"
+
+alias prp="pipenv run python"
 
 #alias -- -="cd -"                  # Go to previous dir with -
 #alias ....="cd ../../.."
@@ -159,6 +170,19 @@ alias dfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 #alias tree="/usr/bin/tree --charset unicode"
 #alias treed="/usr/bin/tree --charset unicode -d"
 #alias week="date +%V"
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# functions
+
+function backup () {
+  # take a quick & dirty backup of a file
+  #cp -v ${1}{,-$(date +%Y%m%d_%H%M%S)}
+  cp -v ${1}{,-$(date +%s)}
+}
+
+
+
 
 # command line syntax highlighting
 # zsh-syntax-highlighting.zsh wraps ZLE widgets.
